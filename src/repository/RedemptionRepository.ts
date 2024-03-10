@@ -3,24 +3,29 @@ import { Redemption } from "../model/Redemption";
 import fs from "fs";
 import csv from "csv-parser";
 import path from "path";
-
+/**
+ * Represents a repository for managing redemptions.
+ */
 export class RedemptionRepository implements IRedemptionRepository {
-    private _redemptions: Redemption[];
+    public _redemptions: Redemption[];
 
+    /**
+     * Constructs a new instance of the RedemptionRepository class.
+     */
     constructor() {
         this._redemptions = [];
         fs.createReadStream(path.join(__dirname, "..", "..", "data", "redemptions.csv"))
             .pipe(csv())
             .on("data", (row) => {
-                // const data = JSON.parse(JSON.stringify(row));
-                // console.log(data["staff_pass_id"], data["team_name"], data["created_at"]);
                 this.addNewRedemption(row.teamID, new Date(row.redeemedAt));
             })
-            .on("end", () => {
-                //console.log("Populated staff to team mapping from CSV file.");
-            });
     }
 
+    /**
+     * Adds a new redemption to the repository.
+     * @param teamID - The ID of the team.
+     * @param date - The date of redemption.
+     */
     addNewRedemption(teamID: string, date: Date): void {
         if (!this.checkTeamRedeemed(teamID)) {
             let newRedemption = new Redemption(teamID, date);
@@ -28,10 +33,18 @@ export class RedemptionRepository implements IRedemptionRepository {
         }
     }
 
+    /**
+     * Checks if a team has already been redeemed.
+     * @param teamName - The name of the team.
+     * @returns True if the team has been redeemed, false otherwise.
+     */
     checkTeamRedeemed(teamName: string): boolean {
         return this._redemptions.some((redemption) => redemption.teamID === teamName);
     }
 
+    /**
+     * Saves the redemptions to a CSV file.
+     */
     saveRedemptions() {
         const data = this._redemptions.map((redemption) => {
             return {

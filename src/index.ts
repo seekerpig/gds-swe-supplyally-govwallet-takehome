@@ -6,6 +6,9 @@ import { StaffToTeamRepository } from "./repository/StaffToTeamRepository";
 import { RedemptionRepository } from "./repository/RedemptionRepository";
 import chalk from "chalk";
 
+/**
+ * Represents a console application for managing redemptions.
+ */
 class ConsoleApp {
     private rl: readline.Interface;
     private staffToTeamRepository: StaffToTeamRepository;

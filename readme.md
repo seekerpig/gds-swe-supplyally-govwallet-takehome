@@ -10,9 +10,15 @@ This project follows a modular structure, with the main codebase located within 
 
 The application is a console-based application that the "admin" member interacts with, the admin in charge of providing the redemption services to the representative staff that comes up to them.
 
+Note: new redemptions data is persistent and stored inside redemptions.csv
+
 # To Start App
+npm install
+and
 npm run dev
 
+# To Run Unit tests (using Jest)
+npm test
 
 # Assumptions
 
