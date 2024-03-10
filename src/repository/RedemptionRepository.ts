@@ -17,7 +17,7 @@ export class RedemptionRepository implements IRedemptionRepository {
         fs.createReadStream(path.join(__dirname, "..", "..", "data", "redemptions.csv"))
             .pipe(csv())
             .on("data", (row) => {
-                this.addNewRedemption(row.teamID, new Date(row.redeemedAt));
+                this.addNewRedemption(row.teamID, new Date(Number(row.redeemedAt)));
             })
     }
 
@@ -55,7 +55,7 @@ export class RedemptionRepository implements IRedemptionRepository {
 
         const csvData = [
             ["teamID", "redeemedAt"],
-            ...data.map((redemption) => [redemption.teamID, redemption.redeemedAt.toISOString()]),
+            ...data.map((redemption) => [redemption.teamID, redemption.redeemedAt.getTime()]),
         ];
 
         const csvString = csvData.map((row) => row.join(",")).join("\n");
